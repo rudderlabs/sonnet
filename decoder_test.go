@@ -411,6 +411,8 @@ var unmarshalTests = []unmarshalTest{
 	{in: `true`, ptr: new(bool), out: true},
 	{in: `1`, ptr: new(int), out: 1},
 	{in: `1.2`, ptr: new(float64), out: 1.2},
+	{in: `-26413875975788446000`, ptr: new(float64), out: float64(-26413875975788446000)},
+	{in: `3.4028235e+38`, ptr: new(float32), out: float32(3.4028235e+38)},
 	{in: `-5`, ptr: new(int16), out: int16(-5)},
 	{in: `2`, ptr: new(Number), out: Number("2"), useNumber: true},
 	{in: `2`, ptr: new(Number), out: Number("2")},

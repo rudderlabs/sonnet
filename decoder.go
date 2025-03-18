@@ -431,7 +431,7 @@ func decodeFloat(head byte, val reflect.Value, dec *Decoder) error {
 	if err := dec.eatNumber(); err != nil {
 		return err
 	}
-	f64, err := strconv.ParseFloat(string(dec.buf[off-1:dec.pos]), 64)
+	f64, err := strconv.ParseFloat(string(dec.buf[off-1:dec.pos]), val.Type().Bits())
 	if err != nil {
 		return err
 	}
