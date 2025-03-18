@@ -21,7 +21,7 @@ But that's not all. even with these downsides, they're still slow.
 ### Installation
 
 ```
-go get github.com/sugawarayuuta/sonnet
+go get github.com/rudderlabs/sonnet
 ```
 
 ### Usage
@@ -40,7 +40,7 @@ After some effort, it's actually faster than the previous one. See the below ben
 
 ### Benchmarks
 
-Although I recommend you to benchmark this yourself, [here](https://github.com/sugawarayuuta/benchmark) is benchmarks on my machine for reference. (currently, it's showing the old version. It'll be updated to the latest version of this, soon)
+Although I recommend you to benchmark this yourself, [here](https://github.com/rudderlabs/benchmark) is benchmarks on my machine for reference. (currently, it's showing the old version. It'll be updated to the latest version of this, soon)
 
 In short, At least in my environment, I couldn't find a faster library that is implemented "correctly". "correct", as in, proper UTF8 handling, validation of RawMessage, and others. Which some of the alternatives don't do.
 

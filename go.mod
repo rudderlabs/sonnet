@@ -1,3 +1,3 @@
-module github.com/sugawarayuuta/sonnet
+module github.com/rudderlabs/sonnet
 
 go 1.21.0

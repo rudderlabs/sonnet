@@ -67,16 +67,10 @@ func (dec *Decoder) readAny(head byte) (any, error) {
 		}
 		dec.opt |= optKeep
 		off := dec.pos
-		f64, err := dec.readFloat()
-		if err == strconv.ErrRange {
-			// rare, slow path.
-			dec.pos = off
-			err = dec.eatNumber()
-			if err != nil {
-				return 0, err
-			}
-			f64, err = strconv.ParseFloat(string(dec.buf[off-1:dec.pos]), 64)
+		if err := dec.eatNumber(); err != nil {
+			return 0, err
 		}
+		f64, err := strconv.ParseFloat(string(dec.buf[off-1:dec.pos]), 64)
 		if err != nil {
 			return nil, err
 		}

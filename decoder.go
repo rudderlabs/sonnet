@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding"
 	"errors"
-	"github.com/sugawarayuuta/sonnet/internal/mem"
 	"io"
 	"reflect"
 	"strconv"
+
+	"github.com/rudderlabs/sonnet/internal/mem"
 )
 
 type (
@@ -427,16 +428,10 @@ func decodeFloat(head byte, val reflect.Value, dec *Decoder) error {
 	}
 	dec.opt |= optKeep
 	off := dec.pos
-	f64, err := dec.readFloat()
-	if err == strconv.ErrRange {
-		// rare, slow path.
-		dec.pos = off
-		err = dec.eatNumber()
-		if err != nil {
-			return err
-		}
-		f64, err = strconv.ParseFloat(string(dec.buf[off-1:dec.pos]), 64)
+	if err := dec.eatNumber(); err != nil {
+		return err
 	}
+	f64, err := strconv.ParseFloat(string(dec.buf[off-1:dec.pos]), 64)
 	if err != nil {
 		return err
 	}

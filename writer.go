@@ -1,11 +1,12 @@
 package sonnet
 
 import (
-	"github.com/sugawarayuuta/sonnet/internal/arith"
 	"math"
 	"reflect"
 	"strconv"
 	"unicode/utf8"
+
+	"github.com/rudderlabs/sonnet/internal/arith"
 )
 
 var (

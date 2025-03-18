@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding"
 	"errors"
-	"github.com/sugawarayuuta/sonnet/internal/mem"
 	"io"
 	"reflect"
 	"strconv"
+
+	"github.com/rudderlabs/sonnet/internal/mem"
 )
 
 type (

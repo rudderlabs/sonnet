@@ -1,6 +1,6 @@
 package mem
 
-import "github.com/sugawarayuuta/sonnet/internal/arith"
+import "github.com/rudderlabs/sonnet/internal/arith"
 
 type (
 	circ[typ any] struct {

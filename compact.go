@@ -2,8 +2,9 @@ package sonnet
 
 import (
 	"errors"
-	"github.com/sugawarayuuta/sonnet/internal/arith"
 	"strconv"
+
+	"github.com/rudderlabs/sonnet/internal/arith"
 )
 
 type (

@@ -1,8 +1,9 @@
 package sonnet
 
 import (
-	"github.com/sugawarayuuta/sonnet/internal/arith"
 	"math/rand"
+
+	"github.com/rudderlabs/sonnet/internal/arith"
 )
 
 type (

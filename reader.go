@@ -3,13 +3,14 @@ package sonnet
 import (
 	"encoding/binary"
 	"errors"
-	"github.com/sugawarayuuta/sonnet/internal/arith"
-	"github.com/sugawarayuuta/sonnet/internal/mem"
 	"io"
 	"reflect"
 	"strconv"
 	"unicode/utf16"
 	"unicode/utf8"
+
+	"github.com/rudderlabs/sonnet/internal/arith"
+	"github.com/rudderlabs/sonnet/internal/mem"
 )
 
 type (
@@ -398,75 +399,6 @@ func (dec *Decoder) hex() (rune, error) {
 		run = run<<4 + rune(char)
 	}
 	return run, nil
-}
-
-func (dec *Decoder) readFloat() (float64, error) {
-	dec.pos-- // 1 for head.
-	neg := dec.buf[dec.pos] == '-'
-	var mant uint64
-	var pow int64
-	if neg {
-		dec.pos++
-		if dec.pos >= len(dec.buf) && !dec.fill() {
-			return 0, dec.errSyntax("JSON number ended with '-'")
-		}
-		if dec.buf[dec.pos]-'0' >= 10 {
-			return 0, dec.errSyntax("invalid character " + strconv.QuoteRune(rune(dec.buf[dec.pos])) + " in numeric literal")
-		}
-	}
-	if dec.buf[dec.pos] == '0' {
-		// do nothing as mant is already 0.
-		dec.pos++
-	} else {
-		u64, read := dec.appendUint(0)
-		if read == -1 {
-			return 0, strconv.ErrRange
-		}
-		mant = u64
-	}
-	if dec.pos < len(dec.buf) && dec.buf[dec.pos] == '.' {
-		dec.pos++
-		if dec.pos >= len(dec.buf) && !dec.fill() {
-			return 0, dec.errSyntax("JSON number ended with '.'")
-		}
-		if dec.buf[dec.pos]-'0' >= 10 {
-			return 0, dec.errSyntax("invalid character " + strconv.QuoteRune(rune(dec.buf[dec.pos])) + " after decimal point in numeric literal")
-		}
-		u64, read := dec.appendUint(mant)
-		if read == -1 {
-			return 0, strconv.ErrRange
-		}
-		mant = u64
-		pow -= int64(read)
-	}
-	if dec.pos < len(dec.buf) && dec.buf[dec.pos]|0x20 == 'e' {
-		var eneg bool
-		dec.pos++
-		if (dec.pos < len(dec.buf) || dec.fill()) && (dec.buf[dec.pos] == '+' || dec.buf[dec.pos] == '-') {
-			eneg = dec.buf[dec.pos] == '-'
-			dec.pos++
-		}
-		if dec.pos >= len(dec.buf) && !dec.fill() {
-			return 0, dec.errSyntax("JSON number ended with 'e' or 'E'")
-		}
-		if dec.buf[dec.pos]-'0' >= 10 {
-			return 0, dec.errSyntax("invalid character " + strconv.QuoteRune(rune(dec.buf[dec.pos])) + " in exponent of numeric literal")
-		}
-		enum, read := dec.appendUint(0)
-		if read == -1 {
-			return 0, strconv.ErrRange
-		}
-		sign, ok := addSign(enum, eneg)
-		if !ok {
-			return 0, strconv.ErrRange
-		}
-		pow += sign
-	}
-	f64, ok := arith.Lemire64(mant, pow, neg)
-	if !ok {
-		return 0, strconv.ErrRange
-	}
-	return f64, nil
 }
 
 func (dec *Decoder) eatNumber() error {
